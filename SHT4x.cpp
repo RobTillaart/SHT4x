@@ -37,9 +37,6 @@ bool SHT4x::begin()
     _error = SHT4x_ERR_WRITECMD;
     return false;   //  invalid address
   }
-  {
-    return false;
-  }
   return reset();
 }
 

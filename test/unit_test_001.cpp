@@ -105,7 +105,7 @@ unittest(test_begin)
 
   // default value == 0
   assertEqual(-45, sht.getTemperature());
-  assertEqual(0, sht.getHumidity());
+  assertEqual(-6,  sht.getHumidity());
   assertEqual(0, sht.getRawTemperature());
   assertEqual(0, sht.getRawHumidity());
 }
