@@ -128,22 +128,30 @@ unittest(test_read)
   expect = SHT4x_ERR_READBYTES;
   assertEqual(expect, sht.getError());
 
+/*
+  TODO - can this be converted to SHT4x call
   start = millis();
   assertFalse(sht.read(false));
   stop = millis();
   Serial.println(stop - start);
   expect = SHT4x_ERR_READBYTES;
   assertEqual(expect, sht.getError());
+*/
 
+/*
+  TODO - can this be converted to SHT4x call
   start = millis();
   assertFalse(sht.read(true));
   stop = millis();
   Serial.println(stop - start);
   expect = SHT4x_ERR_READBYTES;
   assertEqual(expect, sht.getError());
+  */
 }
 
 
+/*
+  TODO - can this be converted to SHT4x call
 unittest(test_readStatus)
 {
   SHT4x sht(0x44);
@@ -157,8 +165,12 @@ unittest(test_readStatus)
   expect = SHT4x_ERR_READBYTES;
   assertEqual(expect, sht.getError());
 }
+*/
+
+
 
 /*
+  TODO - can this be converted to SHT4x call
 unittest(test_heater)
 {
   SHT4x sht(0x44);
