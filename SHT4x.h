@@ -70,7 +70,7 @@ public:
   float    getHumidity()       { return _rawHumidity    * (125.0 / 65535.0) - 6.0; };
   //  getTemperature returns Celsius
   float    getTemperature()    { return _rawTemperature * (175.0 / 65535.0) - 45.0; };
-  float    getFahrenheit()     { return _rawTemperature * (63.0 /13107.0) - 49.0; };
+  float    getFahrenheit()     { return _rawTemperature * (315.0 / 65535.0) - 49.0; };
   //  raw data e.g. debugging or efficient logging / transmit.
   uint16_t getRawHumidity()    { return _rawHumidity; };
   uint16_t getRawTemperature() { return _rawTemperature; };
@@ -89,7 +89,7 @@ public:
 
 protected:
   uint8_t  _address;
-  uint8_t _lastMeasurementType; //  SHT4x_MEASUREMENT_SLOW, SHT4x_MEASUREMENT_MEDIUM, SHT4x_MEASUREMENT_FAST
+  uint8_t  _lastMeasurementType; //  SHT4x_MEASUREMENT_SLOW, SHT4x_MEASUREMENT_MEDIUM, SHT4x_MEASUREMENT_FAST
   uint32_t _lastRead;
   uint32_t _lastRequest;   //  for async interface
   uint16_t _rawHumidity;

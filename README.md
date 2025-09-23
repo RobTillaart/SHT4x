@@ -16,20 +16,53 @@ Arduino library for the SHT4x temperature and humidity sensor.
 
 ## Description
 
-The SHT4x family of sensors should work up to 1 MHz I2C.
+The SHT4x family is the 4th generation of Sensirion Humidity and Temperature sensors.
 
-Accuracy table
+This library is build upon the https://github.com/RobTillaart/SHT31 library.
+The reason for this (extra) SHT4x library is to have an asynchronous interface like 
+the SHT31 library has.
 
-|  Sensor  |  Temperature   |  Humidity  |  Verified 
-|:--------:|:--------------:|:----------:|:----------:|
-|   SHT40  |      ~0.2 °C    |     1.8%   |     Y      |
-|   SHT41  |      ~0.2 °C    |     1.8%   |     N      |
-|   SHT43  |      ISO Cal   |     1.8%   |     N      |
-|   SHT45  |      ~0.1 °C    |     1.0%   |     N      |
+The most important difference with the SHT31 seems to be the way the heater is 
+implemented and can be used.
+
+The library is not tested and verified 100% so feedback is welcome.
+
+Datasheet used: Version 7.1 – March 2025.
+
+
+**Accuracy table**
+
+|  Sensor  |  Temperature  |  Humidity  |  Verified  |  Notes  |
+|:--------:|:-------------:|:----------:|:----------:|:-------:|
+|   SHT40  |     ~0.2 °C   |     1.8%   |     Y      |
+|   SHT41  |     ~0.2 °C   |     1.8%   |     N      |
+|   SHT43  |     ~0.2 °C   |     1.8%   |     N      |  ISO/IEC 17025 3-point calibration 
+|   SHT45  |     ~0.1 °C   |     1.0%   |     N      |
+
+
+The datasheet states 3 different accuracies for the SHT43 (ISO
+
+For more details, please read the datasheet (check https://sensirion.com )
 
 
 An elaborated library for the SHT4x sensor can be found here
 - https://github.com/Sensirion/arduino-i2c-sht4x
+
+As always feedback is welcome.
+
+
+## I2C
+
+The SHT4x family of sensors should work up to 1 MHz I2C.
+
+The library does not support "softWare I2C" based SHT4x.
+
+
+### I2C Address
+
+The SHT4x sensors have a fixed I2C address, however they can be ordered with 
+one of three addresses, 0x44, 0x45 or 0x46. Not all addresses seem to be available
+for all the different SHT4x sensors. Check latest datasheet for details.
 
 
 ### I2C multiplexing
@@ -106,23 +139,41 @@ Returns false if device address is incorrect or device cannot be reset.
   - **SHT4x_MEASUREMENT_SHORT_MEDIUM_HEAT** :activate heater with 110mW for 0.1s including a high precision measurement just before deactivation
   - **SHT4x_MEASUREMENT_LONG_LOW_HEAT** :activate heater with 20mW for 1s including a high precision measurement just before deactivation
   - **SHT4x_MEASUREMENT_SHORT_LOW_HEAT** :activate heater with 20mW for 0.1s including a high precision measurement just before deactivation
-  - **errorCheck**: errorCheck = true does the CRC check. Returns false if reading fails or in case of a CRC failure. Equivalent to fast = false in the SHT31 library. 
+  - **errorCheck**: errorCheck = true does the CRC check. Returns false if reading fails or in case of a CRC failure. Equivalent to fast = false in the SHT31 library.
+Note that the call to read() blocks for a serious amount of time. 
+If needed use the **Async interface** as this allows to do other tasks
+while waiting for the measurement. See below.
+
+
+| measurement type                    |  duration  |  heater  |  power   |  notes  |
+|:-----------------------------------:|:----------:|:--------:|:--------:|:-------:|
+| SHT4x_MEASUREMENT_SLOW              |     9 ms   |     N    |     -    | default |
+| SHT4x_MEASUREMENT_MEDIUM            |     5 ms   |     N    |     -    |
+| SHT4x_MEASUREMENT_FAST              |     2 ms   |     N    |     -    |
+| SHT4x_MEASUREMENT_LONG_HIGH_HEAT    |  1100 ms   |     Y    |  200 mW  |
+| SHT4x_MEASUREMENT_LONG_MEDIUM_HEAT  |  1100 ms   |     Y    |  110 mW  |
+| SHT4x_MEASUREMENT_LONG_LOW_HEAT     |  1100 ms   |     Y    |   20 mW  |
+| SHT4x_MEASUREMENT_SHORT_HIGH_HEAT   |   110 ms   |     Y    |  200 mW  |
+| SHT4x_MEASUREMENT_SHORT_MEDIUM_HEAT |   110 ms   |     Y    |  110 mW  |
+| SHT4x_MEASUREMENT_SHORT_LOW_HEAT    |   110 ms   |     Y    |   20 mW  |
+
 
 Meta information about the sensor.
 
-- **uint32_t lastRead()** in milliSeconds since start of program.
+- **uint32_t lastRead()** timestamp of last successful **read()** in milliSeconds since start of program.
 - **bool reset()** resets the sensor, soft reset by default. Returns false if call fails.
+Note that reset() blocks for 1 ms so sensor can reinitialize.
 
 The following functions will return the same value until a new **read()** call (or async) is made.
 
 - **float getHumidity()** computes the relative humidity in % based on the latest raw reading, and returns it.
 - **float getTemperature()** computes the temperature in °C based on the latest raw reading, and returns it.
-- **float getFahrenheit()** computes the temperature in °F based on the latest raw reading, and returns it..
+- **float getFahrenheit()** computes the temperature in °F based on the latest raw reading, and returns it.
 
 
-The **getRawHumidity()** and **getRawTemperature()** can be used to minimize storage or communication as the data type is 50% smaller.
-Another application is faster comparison with a previous value or threshold.
-However comparisons are quite fast.
+The **getRawHumidity()** and **getRawTemperature()** can be used to minimize storage or communication 
+as the data type is 50% smaller.
+Another application for the raw data, is faster comparison with a previous value or threshold.
 
 - **uint16_t getRawHumidity()** returns the raw two-byte representation of humidity directly from the sensor.
 - **uint16_t getRawTemperature()** returns the raw two-byte representation of temperature directly from the sensor.
@@ -152,13 +203,16 @@ any command as the error flag could be from a previous command.
 |  0x89   |  SHT4x_ERR_HEATER_ON          |  Could not switch on heater    |
 |  0x8A   |  SHT4x_ERR_SERIAL_NUMBER_CRC  |  Could not switch on heater    |
 
+
 ### Async interface
 
 See async example for usage
 
-- **bool requestData(uint8_t measurementType = SHT4x_MEASUREMENT_SLOW)** requests a new measurement. Returns false if this fails. See read() for the possible input.
+- **bool requestData(uint8_t measurementType = SHT4x_MEASUREMENT_SLOW)** requests a new measurement. 
+Returns false if this fails. See read() for the possible input.
 - **bool dataReady()** checks if enough time has passed to read the data.
-- **bool readData(bool errorCheck = true)** errorCheck = true does the CRC check. Returns false if reading fails or in case of a CRC failure. Equivalent to fast = false in the SHT31 library. 
+- **bool readData(bool errorCheck = true)** errorCheck = true does the CRC check. 
+Returns false if reading fails or in case of a CRC failure. Equivalent to fast = false in the SHT31 library. 
 
 
 ### GetSerial
@@ -171,16 +225,26 @@ errorCheck == false, => no CRC check, faster.
 
 #### Must
 
-- Validate and compile
+- get documentation right
+- test functionality with hardware 
+
 
 #### Should
 
 - Validate the I2C speed
+- check error handling
+  - missing or not used codes.
+  - set _error where needed.
+- optimizations
+  - store the delay needed instead of the MEASUREMENT type. (dataReady)
+- need yield() in some places?
+- datasheet page 3: clips humidity in example code
 
 
 #### Could
 
 - move code from .h to .cpp
+- extend unit-tests if possible.
 
 
 #### Wont

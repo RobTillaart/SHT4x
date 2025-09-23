@@ -150,24 +150,6 @@ unittest(test_read)
 }
 
 
-/*
-  TODO - can this be converted to SHT4x call
-unittest(test_readStatus)
-{
-  SHT4x sht(0x44);
-
-  Wire.begin();
-
-  bool b = sht.begin();
-  assertEqual(b, true);
-
-  //  assertEqual(0xFFFF, sht.readStatus());
-  expect = SHT4x_ERR_READBYTES;
-  assertEqual(expect, sht.getError());
-}
-*/
-
-
 
 /*
   TODO - can this be converted to SHT4x call

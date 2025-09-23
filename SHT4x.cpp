@@ -62,7 +62,7 @@ bool SHT4x::read(uint8_t measurementType, bool errorCheck)
   {
     return false;
   }
-  delay(getDelay()); 
+  delay(getDelay());
   return readData(errorCheck);
 }
 
@@ -109,6 +109,7 @@ bool SHT4x::readData(bool errorCheck)
   uint8_t buffer[6];
   if (readBytes(6, (uint8_t*) &buffer[0]) == false)
   {
+    _error = SHT4x_ERR_READBYTES;
     return false;
   }
 
@@ -206,6 +207,7 @@ uint32_t SHT4x::getDelay()
   }
   return 0;   //  Happen if dataReady get called before requestData
 }
+
 
 uint8_t SHT4x::crc8(const uint8_t *data, uint8_t len)
 {
