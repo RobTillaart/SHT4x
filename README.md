@@ -22,10 +22,10 @@ Accuracy table
 
 |  Sensor  |  Temperature   |  Humidity  |  Verified 
 |:--------:|:--------------:|:----------:|:----------:|
-|   SHT40  |      ~0.2Â°C    |     1.8%   |     Y      |
-|   SHT41  |      ~0.2Â°C    |     1.8%   |     N      |
+|   SHT40  |      ~0.2 °C    |     1.8%   |     Y      |
+|   SHT41  |      ~0.2 °C    |     1.8%   |     N      |
 |   SHT43  |      ISO Cal   |     1.8%   |     N      |
-|   SHT45  |      ~0.1Â°C    |     1.0%   |     N      |
+|   SHT45  |      ~0.1 °C    |     1.0%   |     N      |
 
 
 An elaborated library for the SHT4x sensor can be found here
