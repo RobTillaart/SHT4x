@@ -116,8 +116,8 @@ Meta information about the sensor.
 The following functions will return the same value until a new **read()** call (or async) is made.
 
 - **float getHumidity()** computes the relative humidity in % based on the latest raw reading, and returns it.
-- **float getTemperature()** computes the temperature in ï¿½C based on the latest raw reading, and returns it.
-- **float getFahrenheit()** computes the temperature in ï¿½F based on the latest raw reading, and returns it..
+- **float getTemperature()** computes the temperature in °C based on the latest raw reading, and returns it.
+- **float getFahrenheit()** computes the temperature in °F based on the latest raw reading, and returns it..
 
 
 The **getRawHumidity()** and **getRawTemperature()** can be used to minimize storage or communication as the data type is 50% smaller.
