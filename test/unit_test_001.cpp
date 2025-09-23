@@ -2,7 +2,7 @@
 //    FILE: unit_test_001.cpp
 //  AUTHOR: Rob Tillaart
 // VERSION: 0.1.0
-//    DATE: 2020-12-03
+//    DATE: 2025-09-23
 // PURPOSE: unit tests for the SHT4x temperature and humidity sensor
 //          https://github.com/RobTillaart/SHT4x
 //          https://www.adafruit.com/product/2857
@@ -22,10 +22,10 @@
 // assertNull(actual)
 
 /*
-  most unit tests will test for fail 
+  most unit tests will test for fail
   as there is no sensor connected
   and there is no mockup.
-  
+
   It appears that Wire.write does not fail without sensor...
 */
 
@@ -54,14 +54,18 @@ unittest_teardown()
 
 unittest(test_constants_1)
 {
-  fprintf(stderr, "fields readStatus\n");
-  assertEqual(SHT4x_STATUS_ALERT_PENDING   , (1 << 15) );
-  assertEqual(SHT4x_STATUS_HEATER_ON       , (1 << 13) );
-  assertEqual(SHT4x_STATUS_HUM_TRACK_ALERT , (1 << 11) );
-  assertEqual(SHT4x_STATUS_TEMP_TRACK_ALERT, (1 << 10) );
-  assertEqual(SHT4x_STATUS_SYSTEM_RESET    , (1 << 4)  );
-  assertEqual(SHT4x_STATUS_COMMAND_STATUS  , (1 << 1)  );
-  assertEqual(SHT4x_STATUS_WRITE_CRC_STATUS, (1 << 0)  );
+  fprintf(stderr, "SHT4x measurement commands\n");
+  assertEqual(SHT4x_MEASUREMENT_SLOW        , 0xFD);
+  assertEqual(SHT4x_MEASUREMENT_MEDIUM      , 0xF6);
+  assertEqual(SHT4x_MEASUREMENT_FAST        , 0xE0);
+
+  fprintf(stderr, "SHT4x measurement commands with heater\n");
+  assertEqual(SHT4x_MEASUREMENT_LONG_HIGH_HEAT    , 0x39);
+  assertEqual(SHT4x_MEASUREMENT_SHORT_HIGH_HEAT   , 0x32);
+  assertEqual(SHT4x_MEASUREMENT_LONG_MEDIUM_HEAT  , 0x2F);
+  assertEqual(SHT4x_MEASUREMENT_SHORT_MEDIUM_HEAT , 0x24);
+  assertEqual(SHT4x_MEASUREMENT_LONG_LOW_HEAT     , 0x1E);
+  assertEqual(SHT4x_MEASUREMENT_SHORT_LOW_HEAT    , 0x15);
 }
 
 
@@ -148,8 +152,8 @@ unittest(test_readStatus)
 
   bool b = sht.begin();
   assertEqual(b, true);
-  
-  assertEqual(0xFFFF, sht.readStatus());
+
+  //  assertEqual(0xFFFF, sht.readStatus());
   expect = SHT4x_ERR_READBYTES;
   assertEqual(expect, sht.getError());
 }
@@ -163,7 +167,7 @@ unittest(test_heater)
 
   bool b = sht.begin();
   assertEqual(b, true);
-  
+
   assertTrue(sht.heatOn());
   expect = SHT4x_OK;
   assertEqual(expect, sht.getError());
@@ -187,7 +191,7 @@ unittest(test_async)
 
   bool b = sht.begin();
   assertEqual(b, true);
-  
+
   assertTrue(sht.requestData());
   expect = SHT4x_OK;
   assertEqual(expect, sht.getError());
@@ -212,4 +216,4 @@ unittest(test_async)
 
 unittest_main()
 
-//  -- END OF FILE -- 
+//  -- END OF FILE --

@@ -33,7 +33,7 @@ void setup()
   Serial.print("\tHumidity:\t");
   Serial.println(sht.getHumidity(), 1);
   Serial.println();
-  Serial.println("Temperature should now increase and humidity decrease.")
+  Serial.println("Temperature should now increase and humidity decrease.");
 }
 
 
@@ -49,4 +49,3 @@ void loop()
 
 
 //  -- END OF FILE --
-
