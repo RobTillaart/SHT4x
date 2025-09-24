@@ -4,6 +4,26 @@
 // PURPOSE: demo reading raw data
 //     URL: https://github.com/RobTillaart/SHT4x
 
+/*
+For async call:
+requestData(measurementType = SHT4x_MEASUREMENT_SLOW);
+
+For sync call:
+read(uint8_t measurementType = SHT4x_MEASUREMENT_SLOW, bool errorCheck = true);
+
+| measurement type                    |  duration  |  heater  |  power   |  notes  |
+|:-----------------------------------:|:----------:|:--------:|:--------:|:-------:|
+| SHT4x_MEASUREMENT_SLOW              |     9 ms   |     N    |     -    | default |
+| SHT4x_MEASUREMENT_MEDIUM            |     5 ms   |     N    |     -    |
+| SHT4x_MEASUREMENT_FAST              |     2 ms   |     N    |     -    |
+| SHT4x_MEASUREMENT_LONG_HIGH_HEAT    |  1100 ms   |     Y    |  200 mW  |
+| SHT4x_MEASUREMENT_LONG_MEDIUM_HEAT  |  1100 ms   |     Y    |  110 mW  |
+| SHT4x_MEASUREMENT_LONG_LOW_HEAT     |  1100 ms   |     Y    |   20 mW  |
+| SHT4x_MEASUREMENT_SHORT_HIGH_HEAT   |   110 ms   |     Y    |  200 mW  |
+| SHT4x_MEASUREMENT_SHORT_MEDIUM_HEAT |   110 ms   |     Y    |  110 mW  |
+| SHT4x_MEASUREMENT_SHORT_LOW_HEAT    |   110 ms   |     Y    |   20 mW  |
+
+*/
 
 #include "Wire.h"
 #include "SHT4x.h"
@@ -44,9 +64,9 @@ void loop()
   if (sht.dataReady())
   {
     start = micros();
-    bool success  = sht.readData();   //  default = true = CRC Check
+    bool success  = sht.readData(); //  default = true for CRC check
     stop = micros();
-    sht.requestData();                //  request for next sample
+    sht.requestData();  //  default SHT4x_MEASUREMENT_SLOW, request next sample
 
     Serial.print("\t");
     Serial.print(stop - start);

@@ -23,7 +23,9 @@ The reason for this (extra) SHT4x library is to have an asynchronous interface l
 the SHT31 library has.
 
 The most important difference with the SHT31 seems to be the way the heater is 
-implemented and can be used.
+implemented and can be used. More information on how to use properly the heater
+can be found in the SHT4x datasheet and in the sensirion application note 
+"*Using the Integrated Heater of SHT4x in High-Humidity Environments*"
 
 The library is not tested and verified 100% so feedback is welcome.
 
@@ -146,7 +148,7 @@ while waiting for the measurement. See below.
 
 
 | measurement type                    |  duration  |  heater  |  power   |  notes  |
-|:-----------------------------------:|:----------:|:--------:|:--------:|:-------:|
+|:------------------------------------|:----------:|:--------:|:--------:|:-------:|
 | SHT4x_MEASUREMENT_SLOW              |     9 ms   |     N    |     -    | default |
 | SHT4x_MEASUREMENT_MEDIUM            |     5 ms   |     N    |     -    |
 | SHT4x_MEASUREMENT_FAST              |     2 ms   |     N    |     -    |
