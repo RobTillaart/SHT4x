@@ -108,15 +108,19 @@ float SHT4x::getHumidity()
 
 float SHT4x::getTemperature()
 {
-  return _rawTemperature * (175.0 / 65535.0) - 45.0;
-}
+  constexpr float SCALE  = 175.0f / 65535.0f;
+  constexpr float OFFSET = 45.0f;
 
+  return _rawTemperature * SCALE - OFFSET;
+}
 
 float SHT4x::getFahrenheit()
 {
-  return _rawTemperature * (315.0 / 65535.0) - 49.0;
-}
+  constexpr float SCALE  = 315.0f / 65535.0f;
+  constexpr float OFFSET = 49.0f;
 
+  return _rawTemperature * SCALE - OFFSET;
+}
 
 uint16_t SHT4x::getRawHumidity()
 {
