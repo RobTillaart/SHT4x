@@ -91,24 +91,36 @@ bool SHT4x::reset(bool fast)
 
 float SHT4x::getHumidity()
 {
-  float hum = _rawHumidity * (125.0 / 65535.0) - 6.0;
-  if (hum > 100.0)    hum = 100.0;
-  else if (hum < 0.0) hum = 0.0;
+  constexpr float SCALE = 125.0f / 65535.0f;
+  constexpr float OFFSET = 6.0f;
+
+  float hum = _rawHumidity * SCALE - OFFSET;
+
+  constexpr float HUM_MIN = 0.0f;
+  constexpr float HUM_MAX = 100.0f;
+
+  if (hum > HUM_MAX) hum = HUM_MAX;
+  else if (hum < HUM_MIN) hum = HUM_MIN;
+
   return hum;
 }
 
 
 float SHT4x::getTemperature()
 {
-  return _rawTemperature * (175.0 / 65535.0) - 45.0;
-}
+  constexpr float SCALE  = 175.0f / 65535.0f;
+  constexpr float OFFSET = 45.0f;
 
+  return _rawTemperature * SCALE - OFFSET;
+}
 
 float SHT4x::getFahrenheit()
 {
-  return _rawTemperature * (315.0 / 65535.0) - 49.0;
-}
+  constexpr float SCALE  = 315.0f / 65535.0f;
+  constexpr float OFFSET = 49.0f;
 
+  return _rawTemperature * SCALE - OFFSET;
+}
 
 uint16_t SHT4x::getRawHumidity()
 {
