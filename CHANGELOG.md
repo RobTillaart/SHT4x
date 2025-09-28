@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - move code to .cpp file
 - checked I2C performance range
 - constrain humidity between 0..100%
+- merged PR #6 force float math iso double- kudos to Chris0xdeadbeef
 - optimized getDelay() usage.
 - add fast parameter to reset(), default false
 - update readme.md
