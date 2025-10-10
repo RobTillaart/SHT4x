@@ -22,7 +22,7 @@
 #endif
 
 // SHT4x measurement commands
-typedef enum 
+typedef enum
 {
   SHT4x_MEASUREMENT_SLOW                    = 0xFD,
   SHT4x_MEASUREMENT_MEDIUM                  = 0xF6,
@@ -56,13 +56,13 @@ class SHT4x
 public:
   SHT4x(uint8_t address = SHT_DEFAULT_ADDRESS, TwoWire *wire = &Wire);
 
-  bool    begin();
+  bool begin();
   uint8_t getAddress();
   //  check sensor is reachable over I2C
   virtual bool isConnected();
 
   //  blocks for the required time and read after
-  bool read(measType measurementType = SHT4x_MEASUREMENT_SLOW, bool errorCheck = true);
+  bool read(measType measurementType = SHT4x_MEASUREMENT_SLOW, bool CRCCheck = true);
 
   //  lastRead is in milliSeconds since start
   uint32_t lastRead();
@@ -70,10 +70,10 @@ public:
   bool reset(bool fast = false);
 
   //  getHumidity returns 0..100%
-  float    getHumidity();
+  float getHumidity();
   //  getTemperature returns degrees Celsius
-  float    getTemperature();
-  float    getFahrenheit();
+  float getTemperature();
+  float getFahrenheit();
   //  raw data e.g. debugging or efficient logging / transmit.
   uint16_t getRawHumidity();
   uint16_t getRawTemperature();
@@ -82,12 +82,12 @@ public:
   //  ASYNC INTERFACE
   bool requestData(measType measurementType = SHT4x_MEASUREMENT_SLOW);
   bool dataReady();
-  bool readData(bool errorCheck = true);
+  bool readData(bool CRCCheck = true);
 
   //  MISC
   int getError();  //  clears error flag
-  //  errorCheck == false, => skips CRC check
-  bool getSerialNumber(uint32_t &serial, bool errorCheck = true);
+  //  CRCCheck == false, => skips CRC check
+  bool getSerialNumber(uint32_t &serial, bool CRCCheck = true);
 
   //  Heat protection
   bool heatingReady();
@@ -98,20 +98,27 @@ protected:
   uint8_t  _address;
   uint16_t _delay;
   uint32_t _lastRead;
-  uint32_t _lastRequest;      // for async interface
-  uint16_t _heatInterval;     // for overheating protection
-  uint32_t _lastHeatRequest;  // for overheating protection
+  //        for async interface
+  uint32_t _lastRequest;
+
+  //        for overheating protection
+  uint16_t _heatInterval;
+  uint32_t _lastHeatRequest;
+
   uint16_t _rawHumidity;
   uint16_t _rawTemperature;
   uint8_t  _error;
   bool     _heatProtection;
 
-  void     setDelay(uint8_t measurementType);
-  bool     isHeatCmd(uint8_t measurementType);        // for overheating protection
-  void     setHeatInterval(uint8_t measurementType);  // for overheating protection
-  uint8_t  crc8(const uint8_t *data, uint8_t len);
-  virtual bool writeCmd(uint8_t cmd);
-  virtual bool readBytes(uint8_t n, uint8_t *val);
+  void     setDelay(measType measurementType);
+
+  //       for overheating protection
+  bool     isHeatCmd(measType measurementType);
+  void     setHeatInterval(measType measurementType);
+
+  uint8_t  crc8(const uint8_t *data, uint8_t length);
+  virtual bool writeCommand(uint8_t command);
+  virtual bool readBytes(uint8_t length, uint8_t *data);
   TwoWire* _wire;
 };
 

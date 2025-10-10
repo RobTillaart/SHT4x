@@ -59,7 +59,7 @@ uint8_t SHT4x::getAddress()
 }
 
 
-bool SHT4x::read(measType measurementType, bool errorCheck)
+bool SHT4x::read(measType measurementType, bool CRCCheck)
 {
   if (!requestData(measurementType))
   {
@@ -67,7 +67,7 @@ bool SHT4x::read(measType measurementType, bool errorCheck)
     return false;
   }
   delay(_delay);  //  calls yield() for RTOS internally
-  return readData(errorCheck);
+  return readData(CRCCheck);
 }
 
 
@@ -79,7 +79,7 @@ uint32_t SHT4x::lastRead()
 
 bool SHT4x::reset(bool fast)
 {
-  bool b = writeCmd(SHT4x_SOFT_RESET);
+  bool b = writeCommand((uint8_t) SHT4x_SOFT_RESET);
   if (b == false)
   {
     return false;
@@ -153,7 +153,7 @@ bool SHT4x::requestData(measType measurementType)
     }
   }
   // Send command
-  if (writeCmd(measurementType) == false)
+  if (writeCommand((uint8_t)measurementType) == false)
   {
     return false;
   }
@@ -175,7 +175,7 @@ bool SHT4x::dataReady()
 }
 
 
-bool SHT4x::readData(bool errorCheck)
+bool SHT4x::readData(bool CRCCheck)
 {
   uint8_t buffer[6];
   if (readBytes(6, (uint8_t*) &buffer[0]) == false)
@@ -184,7 +184,7 @@ bool SHT4x::readData(bool errorCheck)
     return false;
   }
 
-  if (errorCheck)
+  if (CRCCheck)
   {
     if (buffer[2] != crc8(buffer, 2))
     {
@@ -221,8 +221,8 @@ int SHT4x::getError()
 /**
  * See https://sensirion.com/media/documents/E5762713/63D103C2/Sensirion_electronic_identification_code_SHT3x.pdf
  */
-bool SHT4x::getSerialNumber(uint32_t &serial, bool errorCheck) {
-  if (writeCmd(SHT4x_GET_SERIAL_NUMBER) == false) {
+bool SHT4x::getSerialNumber(uint32_t &serial, bool CRCCheck) {
+  if (writeCommand((uint8_t)SHT4x_GET_SERIAL_NUMBER) == false) {
       return false;
   }
   delay(1);
@@ -231,7 +231,7 @@ bool SHT4x::getSerialNumber(uint32_t &serial, bool errorCheck) {
     return false;
   }
 
-  if (errorCheck)
+  if (CRCCheck)
   {
     if (buffer[2] != crc8(buffer, 2)) {
     _error = SHT4x_ERR_SERIAL_NUMBER_CRC;
@@ -272,7 +272,7 @@ void SHT4x::setHeatProtection(bool activateHeatProtection)
 //
 //  PROTECTED
 //
-void SHT4x::setDelay(uint8_t measurementType)
+void SHT4x::setDelay(measType measurementType)
 {
   //  table 5 datasheet
   switch(measurementType)
@@ -300,9 +300,10 @@ void SHT4x::setDelay(uint8_t measurementType)
 }
 
 
-void SHT4x::setHeatInterval(uint8_t measurementType)
+void SHT4x::setHeatInterval(measType measurementType)
 {
-  //  From a 10% duty cycle for 200 mW. Linear interpolation for lower heat power.
+  //  From a 10% duty cycle for 200 mW. 
+  //  Linear interpolation for lower heat power.
   switch(measurementType)
   {
     case SHT4x_MEASUREMENT_LONG_HIGH_HEAT:
@@ -326,7 +327,8 @@ void SHT4x::setHeatInterval(uint8_t measurementType)
   }
 }
 
-bool SHT4x::isHeatCmd(uint8_t measurementType)
+
+bool SHT4x::isHeatCmd(measType measurementType)
 {
   switch(measurementType)
   {
@@ -342,13 +344,13 @@ bool SHT4x::isHeatCmd(uint8_t measurementType)
 }
 
 
-uint8_t SHT4x::crc8(const uint8_t *data, uint8_t len)
+uint8_t SHT4x::crc8(const uint8_t *data, uint8_t length)
 {
   //  CRC-8 formula from page 14 of SHT spec pdf
   const uint8_t POLY(0x31);
   uint8_t crc(0xFF);
 
-  for (uint8_t j = len; j; --j)
+  for (uint8_t j = length; j; --j)
   {
     crc ^= *data++;
 
@@ -361,10 +363,10 @@ uint8_t SHT4x::crc8(const uint8_t *data, uint8_t len)
 }
 
 
-bool SHT4x::writeCmd(uint8_t cmd)
+bool SHT4x::writeCommand(uint8_t command)
 {
   _wire->beginTransmission(_address);
-  _wire->write(cmd);
+  _wire->write(command);
   if (_wire->endTransmission() != 0)
   {
     _error = SHT4x_ERR_WRITECMD;
@@ -375,14 +377,14 @@ bool SHT4x::writeCmd(uint8_t cmd)
 }
 
 
-bool SHT4x::readBytes(uint8_t n, uint8_t *val)
+bool SHT4x::readBytes(uint8_t n, uint8_t *data)
 {
   int rv = _wire->requestFrom(_address, (uint8_t) n);
   if (rv == n)
   {
     for (uint8_t i = 0; i < n; i++)
     {
-      val[i] = _wire->read();
+      data[i] = _wire->read();
     }
     _error = SHT4x_OK;
     return true;

@@ -142,7 +142,7 @@ Returns false if device address is incorrect or device cannot be reset.
 
 ### Read (synchronous)
 
-- **bool read(measType measurementType = SHT4x_MEASUREMENT_SLOW, bool errorCheck = true)** 
+- **bool read(measType measurementType = SHT4x_MEASUREMENT_SLOW, bool CRCCheck = true)** 
   - **SHT4x_MEASUREMENT_SLOW** : High precision measurement
   - **SHT4x_MEASUREMENT_MEDIUM** : Medium precision measurement
   - **SHT4x_MEASUREMENT_FAST** : Low precision measurement
@@ -152,7 +152,7 @@ Returns false if device address is incorrect or device cannot be reset.
   - **SHT4x_MEASUREMENT_SHORT_MEDIUM_HEAT** :activate heater with 110mW for 0.1s including a medium precision measurement just before deactivation
   - **SHT4x_MEASUREMENT_LONG_LOW_HEAT** :activate heater with 20mW for 1s including a low precision measurement just before deactivation
   - **SHT4x_MEASUREMENT_SHORT_LOW_HEAT** :activate heater with 20mW for 0.1s including a low precision measurement just before deactivation
-  - **errorCheck**: errorCheck = true does the CRC check. Returns false if reading fails or in case of a CRC failure. 
+  - **CRCCheck**: CRCCheck = true does the CRC check. Returns false if reading fails or in case of a CRC failure. 
                     Equivalent to fast = false in the SHT31 library.
 
 Note that the call to read() blocks for a serious amount of time. 
@@ -229,7 +229,7 @@ See async example for usage
 - **bool requestData(measType measurementType = SHT4x_MEASUREMENT_SLOW)** requests a new measurement. 
 Returns false if this fails. See read() for the possible input.
 - **bool dataReady()** checks if enough time has passed to read the data.
-- **bool readData(bool errorCheck = true)** errorCheck = true does the CRC check. 
+- **bool readData(bool CRCCheck = true)** CRCCheck = true does the CRC check. 
 Returns false if reading fails or in case of a CRC failure. Equivalent to fast = false in the SHT31 library. 
 
 
@@ -243,8 +243,8 @@ If activateHeatProtection == false, this protection is deactivated.
 
 ### GetSerial
 
-- **bool getSerialNumber(uint32_t &serial, bool errorCheck = true)** errorCheck == true, => CRC check, slower
-errorCheck == false, => no CRC check, faster. 
+- **bool getSerialNumber(uint32_t &serial, bool CRCCheck = true)** CRCCheck == true, => CRC check, slower
+CRCCheck == false, => no CRC check, faster. 
 
 
 ## Future

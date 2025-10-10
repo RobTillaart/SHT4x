@@ -4,7 +4,7 @@
 // PURPOSE: demo two I2C busses
 //     URL: https://github.com/RobTillaart/SHT4x
 //
-//   NOTE: see issue #22 for details
+//   NOTE: see issue #22 (SHT31) for details
 //         originally written for a ATSAMD21G18A custom board.
 
 /*

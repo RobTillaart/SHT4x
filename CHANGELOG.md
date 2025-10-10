@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.0.3] - 2025-09-27
 - add heat interval protection
+- add enum measType to replace defines
+- add SHT4x_ERR_INVALID_ADDRESS
 - move code to .cpp file
 - checked I2C performance range
 - constrain humidity between 0..100%
