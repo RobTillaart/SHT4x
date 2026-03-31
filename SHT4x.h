@@ -37,18 +37,18 @@ typedef enum
 } measType;
 
 //  error codes
-constexpr uint8_t SHT4x_OK                            0x00
-constexpr uint8_t SHT4x_ERR_WRITECMD                  0x81
-constexpr uint8_t SHT4x_ERR_READBYTES                 0x82
-constexpr uint8_t SHT4x_ERR_HEATER_OFF                0x83
-constexpr uint8_t SHT4x_ERR_NOT_CONNECT               0x84
-constexpr uint8_t SHT4x_ERR_CRC_TEMP                  0x85
-constexpr uint8_t SHT4x_ERR_CRC_HUM                   0x86
-constexpr uint8_t SHT4x_ERR_CRC_STATUS                0x87
-constexpr uint8_t SHT4x_ERR_HEATER_COOLDOWN           0x88
-constexpr uint8_t SHT4x_ERR_HEATER_ON                 0x89
-constexpr uint8_t SHT4x_ERR_SERIAL_NUMBER_CRC         0x8A
-constexpr uint8_t SHT4x_ERR_INVALID_ADDRESS           0x8B
+constexpr uint8_t SHT4x_OK                   = 0x00;
+constexpr uint8_t SHT4x_ERR_WRITECMD         = 0x81;
+constexpr uint8_t SHT4x_ERR_READBYTES        = 0x82;
+constexpr uint8_t SHT4x_ERR_HEATER_OFF       = 0x83;
+constexpr uint8_t SHT4x_ERR_NOT_CONNECT      = 0x84;
+constexpr uint8_t SHT4x_ERR_CRC_TEMP         = 0x85;
+constexpr uint8_t SHT4x_ERR_CRC_HUM          = 0x86;
+constexpr uint8_t SHT4x_ERR_CRC_STATUS       = 0x87;
+constexpr uint8_t SHT4x_ERR_HEATER_COOLDOWN  = 0x88;
+constexpr uint8_t SHT4x_ERR_HEATER_ON        = 0x89;
+constexpr uint8_t SHT4x_ERR_SERIAL_NUMBER_CRC = 0x8A;
+constexpr uint8_t SHT4x_ERR_INVALID_ADDRESS  = 0x8B;
 
 
 class SHT4x
