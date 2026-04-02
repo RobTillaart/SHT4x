@@ -56,11 +56,7 @@ void setup()
   if (!sht.begin())
   {
     Serial.println("ERROR: Could not connect to SHT4x sensor");
-    Serial.println("Check wiring or adjust pin variable assignments:");
-    Serial.print("  SDA: GPIO ");
-    Serial.println(SDA_PIN);
-    Serial.print("  SCL: GPIO ");
-    Serial.println(SCL_PIN);
+    Serial.println("Check wiring or adjust Wire.begin pin assignments:");
     while (1) delay(1000);
   }
   
