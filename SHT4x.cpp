@@ -302,27 +302,18 @@ void SHT4x::setDelay(measType measurementType)
 
 void SHT4x::setHeatInterval(measType measurementType)
 {
-  //  From a 10% duty cycle for 200 mW. 
-  //  Linear interpolation for lower heat power.
+  //  From a 10% duty cycle
   switch(measurementType)
   {
     case SHT4x_MEASUREMENT_LONG_HIGH_HEAT:
+    case SHT4x_MEASUREMENT_LONG_MEDIUM_HEAT:
+    case SHT4x_MEASUREMENT_LONG_LOW_HEAT:
       _heatInterval = 10000;
       break;
-    case SHT4x_MEASUREMENT_LONG_MEDIUM_HEAT:
-      _heatInterval = 5500;
-      break;
-    case SHT4x_MEASUREMENT_LONG_LOW_HEAT:
-      _heatInterval = 0;
-      break;
     case SHT4x_MEASUREMENT_SHORT_HIGH_HEAT:
-      _heatInterval = 1000;
-      break;
     case SHT4x_MEASUREMENT_SHORT_MEDIUM_HEAT:
-      _heatInterval = 550;
-      break;
     case SHT4x_MEASUREMENT_SHORT_LOW_HEAT:
-      _heatInterval = 0;
+      _heatInterval = 1000;
       break;
   }
 }
