@@ -7,8 +7,8 @@
 //  This example demonstrates an advanced humidity measurement technique:
 //  1. Takes an initial measurement to assess conditions
 //  2. If high humidity is detected, applies heater to drive off condensation
-//  3. Monitors temperature equilibrium after heating
-//  4. Returns corrected humidity with original (unheated) temperature
+//  3. Continuously samples temperature for equilibrium after heating
+//  4. Returns settled temperature and humidity values
 //
 //  Note: The auto mode functions are in SHT4x_advancedFunctions.ino
 //        This file is automatically included when compiling with the Arduino IDE
