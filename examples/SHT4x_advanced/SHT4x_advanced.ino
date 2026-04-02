@@ -18,8 +18,6 @@
 
 #define SHT4X_DEBUG           false    // true will display heat detection and equalibrium checking serial debug output
 #define SHT_DEFAULT_ADDRESS   0x44
-#define SDA_PIN               16
-#define SCL_PIN               17
 
 //  Auto mode configuration
 #define EQUILIBRIUM_WINDOW_SIZE  8    // 8 samples = 2 seconds @ 250ms intervals
@@ -43,8 +41,9 @@ void setup()
   Serial.begin(115200);
   while (!Serial) delay(500);
   
-  //  Initialize I2C with custom pins
-  Wire.begin(SDA_PIN, SCL_PIN);
+  //  Initialize I2C
+  //  On supported microcontrollers, custom pins can be set using Wire.begin(SDA_PIN, SCL_PIN);
+  Wire.begin(); 
   Wire.setClock(100000);
 
   //  Initialize sensor
