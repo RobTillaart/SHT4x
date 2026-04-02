@@ -41,6 +41,12 @@ void setup()
   Serial.begin(115200);
   while (!Serial) delay(500);
   
+  Serial.println();
+  Serial.println(__FILE__);
+  Serial.print("SHT4x_LIB_VERSION: \t");
+  Serial.println(SHT4x_LIB_VERSION);
+  Serial.println();
+  
   //  Initialize I2C
   //  On supported microcontrollers, custom pins can be set using Wire.begin(SDA_PIN, SCL_PIN);
   Wire.begin(); 
