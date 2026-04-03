@@ -14,8 +14,8 @@
 
 
 //  SUPPORTED COMMANDS
-static constexpr uint8_t SHT4x_SOFT_RESET        = 0x94;
-static constexpr uint8_t SHT4x_GET_SERIAL_NUMBER = 0x89;
+constexpr uint8_t SHT4x_SOFT_RESET        = 0x94;
+constexpr uint8_t SHT4x_GET_SERIAL_NUMBER = 0x89;
 
 
 SHT4x::SHT4x(uint8_t address, TwoWire *wire)
@@ -330,8 +330,9 @@ bool SHT4x::isHeatCmd(measType measurementType)
     case SHT4x_MEASUREMENT_SHORT_MEDIUM_HEAT:
     case SHT4x_MEASUREMENT_SHORT_LOW_HEAT:
       return true;
+    default:
+      return false;
   }
-  return false;
 }
 
 
