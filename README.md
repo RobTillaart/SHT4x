@@ -257,7 +257,7 @@ CRCCheck == false, => no CRC check, faster.
 
 - check error handling
   - missing or not used codes.
-  - set _error where needed.
+  - set error where needed.
 
 #### Could
 
