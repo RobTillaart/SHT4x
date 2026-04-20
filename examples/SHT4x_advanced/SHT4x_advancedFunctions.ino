@@ -212,7 +212,7 @@ bool autoReady()
         if (windowCount >= EQUILIBRIUM_WINDOW_SIZE)
         {
           //  Calculate average dT/dt across all consecutive samples
-          float totalRate = 0.0;
+          float totalRate = 0.0f;
           uint8_t numRates = EQUILIBRIUM_WINDOW_SIZE - 1;
           
           for (uint8_t i = 0; i < numRates; i++)
@@ -221,7 +221,7 @@ bool autoReady()
             uint8_t nextIndex = (windowIndex + i + 1) % EQUILIBRIUM_WINDOW_SIZE;
             
             float dT = abs(temperatureWindow[nextIndex] - temperatureWindow[currentIndex]);
-            float dt = 0.25;  // 250ms between samples
+            float dt = 0.25f;  // 250ms between samples
             totalRate += dT / dt;
           }
           
