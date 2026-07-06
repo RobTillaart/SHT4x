@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - minor edits
 
 ## [0.1.1] - 2026-04-21
-- merge #16, 
+- merge #16,
 - minor edits
 
 ## [0.1.0] - 2026-04-03
