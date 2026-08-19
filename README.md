@@ -72,7 +72,7 @@ Since 0.1.3 a derived class **SHT4xAutomotive** has been implemented to
 guard this 5% duty cycle heating limit.
 There are no other derived classes for specific automotive sensors (yet).
 
-The automotive sensors only use addres 0x44 and 0x45.
+The automotive sensors only use address 0x44 and 0x45.
 
 
 ## I2C
@@ -141,8 +141,8 @@ SHT series temperature sensors
 
 Other temperature sensors
 
-- https://github.com/RobTillaart/DHTNew DHT11/22 etc
-- https://github.com/RobTillaart/DHTStable DHT11/22 etc
+- https://github.com/RobTillaart/DHTNew DHT11/22 etc.
+- https://github.com/RobTillaart/DHTStable DHT11/22 etc.
 - https://github.com/RobTillaart/DHT_Simulator
 - https://github.com/RobTillaart/DS18B20_INT OneWire temperature sensor
 - https://github.com/RobTillaart/DS18B20_RT OneWire temperature sensor
