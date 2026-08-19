@@ -56,6 +56,17 @@ An elaborated library for the SHT4x sensor can be found here
 As always feedback is welcome.
 
 
+### SHT4xA automotive series
+
+There exist the automotive version with type number SHT4xA.
+This device is compatible but should be used less as it has a maximum 
+heater duty cycle of 5%.
+
+Since 0.1.3 a derived class **SHT4xAutomotive** has been implemented to
+guard this 5% duty cycle heating limit.
+There are no other derived classes for specific automotive sensors (yet).
+
+
 ## I2C
 
 The SHT4x family of sensors should work up to 1 MHz I2C.
@@ -284,6 +295,8 @@ CRCCheck == false, => no CRC check, faster.
 
 #### Wont
 - type indicator derived classes (00=BASE, 40,41,43,45)?
+  - automotive version detection (can't have address 0x46)
+- add getKelvin()
 
 
 ## Support
